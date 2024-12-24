@@ -25,7 +25,7 @@ public class StreamSorter {
     }
 
     List<String> sortList(List<String> list) {
-        return null;
+    	return Stream.of(list).sorted().collect(Collectors.toList());
     }
     
     // =================== DO NOT MODIFY THE CODE BELOW ======================

@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class LambdaButtons implements ActionListener {
-	private JFrame window = new JFrame();
+	private JFrame window = new JFrame(); 
 	private JButton addNumbers = new JButton("ADD 2 Numbers");
 	private JButton randNumber = new JButton("RANDOM NUMBER");
 	private JButton tellAJoke = new JButton("TELL A JOKE");
