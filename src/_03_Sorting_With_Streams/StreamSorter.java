@@ -25,7 +25,8 @@ public class StreamSorter {
     }
 
     List<String> sortList(List<String> list) {
-    	return Stream.of(list).sorted().collect(Collectors.toList());
+    	Stream<String> ls = list.stream();
+    	return ls.sorted().collect(Collectors.toList());
     }
     
     // =================== DO NOT MODIFY THE CODE BELOW ======================
