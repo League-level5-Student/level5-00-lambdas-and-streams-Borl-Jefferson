@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.swing.JOptionPane;
+
 import processing.core.PApplet;
 
 /*
@@ -81,7 +83,11 @@ public class Minesweeper extends PApplet {
      */
     boolean checkWin() {
     	Stream<Cell> ls = cells.stream();
-    	if(ls.filter( (x) -> x.revealed==false).filter( (x) -> x.mine=false).count()==0) {
+    	//long counted = ls.filter( (x) -> x.revealed==false).filter( (x) -> x.mine=false).count();
+    	long counted = ls.filter( (x) -> x.revealed==false).filter( (x) -> x.mine==false).count();
+    	System.out.println(counted);
+    	if(counted==0) {
+    		
     		return true;
     	}
     	else {
@@ -105,16 +111,23 @@ public class Minesweeper extends PApplet {
      *        1 1 - X       // cells with '-' should be revealed
      *        - - - -
      */
-    void revealCell(Cell cell) {
-        cell.revealed=true;
-        if(cell.minesAround==0) {
-        	Stream<Cell> ls = cells.stream();
-    	ls.filter((c) -> getNeighbors(cell).contains(c)).forEach((c) -> c.revealed=true);
-    	for(int i=0; i<getNeighbors(cell).size(); i++) {
-    		revealCell(getNeighbors(cell).get(i));
+    void revealCell(Cell cell, Boolean ranOnce) {
+    	
+    	if(cell.mine==false) {
+    		cell.revealed=true;
+    		if(cell.minesAround==0) {
+    			getNeighbors(cell).stream().filter((c) -> c.revealed==false).forEach((c2) -> revealCell(c2, false));
+    			
+    		
+    		}
+    		
+    		
     	}
-        }
-    }
+    	}
+    		
+    	
+        
+    
     
     /*
      * Complete this method using streams to set the number of surrounding
@@ -128,7 +141,7 @@ public class Minesweeper extends PApplet {
      * 6. Use reduce() or sum() to count the number of 1s, i.e. mines
      */
     void setNumberOfSurroundingMines() {
-        	cells.stream().forEach((a) -> getNeighbors(a).stream().filter((c) -> c.mine==true).mapToInt((s) -> 1).sum());
+        	cells.stream().forEach((a) -> a.minesAround=getNeighbors(a).stream().filter((c) -> c.mine==true).mapToInt((s) -> 1).sum());
     }
     
     @Override
@@ -334,13 +347,14 @@ public class Minesweeper extends PApplet {
                 if (cell.flagged) {
                     return;
                 }
-                revealCell(cell);
+                revealCell(cell, false);
 
                 if (cell.mine) {
                     gameEnd("Lost");
                 } else {
                     if( checkWin() ) {
                         gameEnd("Won");
+                        JOptionPane.showMessageDialog(frame, "You won!");
                     }
                 }
             }

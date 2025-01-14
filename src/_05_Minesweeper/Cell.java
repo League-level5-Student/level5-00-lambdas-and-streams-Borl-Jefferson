@@ -13,7 +13,7 @@ public class Cell {
     int i, j, x, y;
     int cellColor;
     int minesAround;
-    boolean mine, revealed, flagged;
+    boolean mine, revealed, flagged, rev2;
 
     public Cell(int i, int j, int cell_color, int gamePanelHeight) {
         this.i = i;                     // cell row #
@@ -26,6 +26,7 @@ public class Cell {
         this.revealed = false;
         this.flagged = false;
         this.minesAround = 0;
+        this.rev2=false;
     }
 
     static void initializeImages(PApplet p, int w) {
@@ -83,5 +84,9 @@ public class Cell {
         processing.strokeWeight(1);
         processing.noFill();
         processing.rect(x, y, Cell.width, Cell.width);
+    }
+    void scanned() {
+    	revealed=true;
+    	rev2=true;
     }
 }
